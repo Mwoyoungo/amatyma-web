@@ -1,0 +1,151 @@
+/* Black and red login page - no gradients */
+.cometchat-login__container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cometchat-padding-8, 32px);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background: #000000;
+}
+
+.cometchat-login__content {
+  display: flex;
+  width: 400px;
+  padding: var(--cometchat-padding-7, 28px) var(--cometchat-padding-10, 40px);
+  flex-direction: column;
+  gap: var(--cometchat-padding-7, 28px);
+  flex-shrink: 0;
+  border-radius: var(--cometchat-radius-5, 20px);
+  border: 1px solid #333333;
+  background: #000000;
+}
+
+.cometchat-login__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cometchat-padding-5, 20px);
+  align-self: stretch;
+}
+
+.cometchat-login__logo > img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+.cometchat-login__title {
+  color: #ffffff;
+  font: var(--cometchat-font-heading1-bold);
+  font-size: 24px;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.cometchat-login__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--cometchat-padding-5, 20px);
+  align-self: stretch;
+}
+
+.cometchat-login__input-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: left;
+  gap: 4px;
+}
+
+.cometchat-login__input-label {
+  color: #ffffff;
+  font: var(--cometchat-font-caption1-medium);
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.cometchat-login__input {
+  width: 100%;
+  display: flex;
+  height: 36px;
+  padding: var(--cometchat-padding-2, 8px);
+  align-items: center;
+  gap: var(--cometchat-padding-1, 4px);
+  align-self: stretch;
+  border-radius: var(--cometchat-radius-2, 8px);
+  border: 1px solid #333333;
+  background: #1a1a1a;
+  color: #ffffff;
+  font: var(--cometchat-font-body-regular);
+  font-size: 14px;
+  font-style: normal;
+}
+
+.cometchat-login__input:focus-visible {
+  outline: none;
+  border: 1px solid #ff3131;
+}
+
+.cometchat-login__input::placeholder {
+  color: #666666;
+}
+
+.cometchat-login__submit-button {
+  width: 100%;
+  display: flex;
+  height: 40px;
+  padding: var(--cometchat-padding-2, 8px) var(--cometchat-padding-5, 20px);
+  justify-content: center;
+  align-items: center;
+  gap: var(--cometchat-padding-2, 8px);
+  align-self: stretch;
+  border-radius: var(--cometchat-radius-2, 8px);
+  background: #ff3131;
+  color: #ffffff;
+  font: var(--cometchat-font-button-medium);
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  border: none;
+  cursor: pointer;
+}
+
+.cometchat-login__submit-button:hover {
+  background: #e62929;
+}
+
+.cometchat-login__submit-button:disabled {
+  background: #999999;
+  cursor: not-allowed;
+}
+
+.cometchat-login__signup-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cccccc;
+  text-align: center;
+  gap: 4px;
+  font: var(--cometchat-font-body-regular);
+  font-size: 14px;
+  font-style: normal;
+}
+
+.cometchat-login__signup-link {
+  color: #ff3131;
+  font: var(--cometchat-font-body-medium);
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  cursor: pointer;
+}
+
+.cometchat-login__signup-link:hover {
+  color: #e62929;
+  text-decoration: underline;
+}

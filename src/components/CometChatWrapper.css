@@ -1,0 +1,99 @@
+.cometchat-wrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--cometchat-background-color-01, #fff);
+}
+
+.cometchat-wrapper-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--cometchat-border-color-default, #e8e8e8);
+  background: var(--cometchat-background-color-01, #fff);
+}
+
+.cometchat-wrapper-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cometchat-wrapper-logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.cometchat-wrapper-logo span {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--cometchat-text-color-primary, #141414);
+}
+
+.cometchat-wrapper-actions {
+  position: relative;
+}
+
+.cometchat-wrapper-menu-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--cometchat-text-color-primary, #141414);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.cometchat-wrapper-menu-button:hover {
+  background: var(--cometchat-background-color-02, #fafafa);
+}
+
+.cometchat-wrapper-dropdown {
+  position: absolute;
+  right: 0;
+  top: 48px;
+  width: 200px;
+  background: var(--cometchat-background-color-01, #fff);
+  border: 1px solid var(--cometchat-border-color-default, #e8e8e8);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.cometchat-wrapper-dropdown button {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  color: var(--cometchat-text-color-primary, #141414);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.2s;
+}
+
+.cometchat-wrapper-dropdown button:hover {
+  background: var(--cometchat-background-color-02, #fafafa);
+}
+
+.cometchat-wrapper-dropdown button.logout-btn {
+  color: #ff3131;
+  border-top: 1px solid var(--cometchat-border-color-default, #e8e8e8);
+}
+
+.cometchat-wrapper-content {
+  flex: 1;
+  overflow: hidden;
+}
