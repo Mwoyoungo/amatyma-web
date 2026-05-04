@@ -27,6 +27,7 @@ interface CometChatAppProps {
  */
 function CometChatApp({ user, group, showGroupActionMessages }: CometChatAppProps) {
   const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
+  const [sessionChecked, setSessionChecked] = useState(false);
   const { styleFeatures, setStyleFeatures } = useCometChatContext();
 
   const systemTheme = useSystemColorScheme();
@@ -53,17 +54,35 @@ function CometChatApp({ user, group, showGroupActionMessages }: CometChatAppProp
 
   /**
    * Fetches the currently logged-in CometChat user and updates the state.
-   * Runs once on component mount.
+   * Retries up to 5 times with 600ms gaps to handle the post-init timing gap
+   * where login() has resolved but the internal session hasn't settled yet.
    */
   useEffect(() => {
-    CometChatUIKit.getLoggedinUser().then((user: CometChat.User | null) => {
-      if (user) {
-        setLoggedInUser(user);
-      } else {
-        setLoggedInUser(null);
+    let cancelled = false;
+    const checkUser = async () => {
+      for (let i = 0; i < 5; i++) {
+        const user = await CometChatUIKit.getLoggedinUser().catch(() => null);
+        if (cancelled) return;
+        if (user) {
+          setLoggedInUser(user);
+          setSessionChecked(true);
+          return;
+        }
+        await new Promise((res) => setTimeout(res, 600));
       }
-    });
+      setSessionChecked(true);
+    };
+    checkUser();
+    return () => { cancelled = true; };
   }, []);
+
+  if (!sessionChecked) {
+    return (
+      <div className="CometChatApp" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+        <div className="cometchat-logo" />
+      </div>
+    );
+  }
 
   return (
     <div className="CometChatApp">
