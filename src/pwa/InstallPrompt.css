@@ -1,0 +1,162 @@
+/* ── Install Prompt ── slides up from the bottom on all platforms */
+.pwa-install {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background: #111111;
+  border-top: 1px solid #2a2a2a;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6);
+  animation: pwa-slide-up 0.35s cubic-bezier(0.32, 0.72, 0, 1) both;
+  /* Push content above the device home indicator / gesture bar */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@keyframes pwa-slide-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Main bar ── */
+.pwa-install__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+}
+
+.pwa-install__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.pwa-install__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pwa-install__title {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.pwa-install__sub {
+  color: #888888;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pwa-install__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Buttons ── */
+.pwa-install__btn {
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background 0.15s, opacity 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pwa-install__btn--primary {
+  background: #ff3131;
+  color: #ffffff;
+  padding: 8px 18px;
+  height: 36px;
+}
+
+.pwa-install__btn--primary:hover  { background: #e02a2a; }
+.pwa-install__btn--primary:active { opacity: 0.85; }
+
+.pwa-install__btn--close {
+  background: transparent;
+  color: #666666;
+  font-size: 16px;
+  padding: 6px 8px;
+  line-height: 1;
+}
+
+.pwa-install__btn--close:hover { color: #aaaaaa; }
+
+.pwa-install__btn--text {
+  background: transparent;
+  color: #ff3131;
+  padding: 10px 0 4px;
+  font-size: 14px;
+}
+
+.pwa-install__btn--text:hover { color: #e02a2a; }
+
+/* ── iOS step-by-step drawer ── */
+.pwa-install__ios-steps {
+  padding: 0 16px 16px;
+  border-top: 1px solid #1e1e1e;
+  background: #0d0d0d;
+  animation: pwa-fade-in 0.2s ease;
+}
+
+@keyframes pwa-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+.pwa-install__ios-heading {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 14px 0 10px;
+}
+
+.pwa-install__ios-list {
+  color: #cccccc;
+  font-size: 13px;
+  line-height: 1.7;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.pwa-install__ios-list li {
+  margin-bottom: 4px;
+}
+
+.pwa-install__ios-list strong {
+  color: #ffffff;
+}
+
+/* ── Tablet / Desktop: show as a compact card in the bottom-right ── */
+@media (min-width: 768px) {
+  .pwa-install {
+    bottom: 24px;
+    left: auto;
+    right: 24px;
+    width: 360px;
+    border-radius: 16px;
+    border: 1px solid #2a2a2a;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7);
+    animation: pwa-slide-in-right 0.35s cubic-bezier(0.32, 0.72, 0, 1) both;
+    padding-bottom: 0;
+  }
+
+  @keyframes pwa-slide-in-right {
+    from { transform: translateX(120%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+  }
+}

@@ -1,0 +1,89 @@
+/* ── SW Update / Offline Ready toast ── appears at the top of the screen */
+.pwa-update {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  animation: pwa-toast-in 0.3s cubic-bezier(0.32, 0.72, 0, 1) both;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  /* Never wider than the screen */
+  max-width: calc(100vw - 32px);
+}
+
+@keyframes pwa-toast-in {
+  from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0);     opacity: 1; }
+}
+
+/* Nudge the toast below any status bar on standalone iOS */
+@media (display-mode: standalone) {
+  .pwa-update {
+    top: calc(env(safe-area-inset-top, 0px) + 8px);
+  }
+}
+
+/* ── Update variant (red accent) ── */
+.pwa-update--refresh {
+  background: #1a0505;
+  border: 1px solid #ff3131;
+  color: #ffffff;
+}
+
+/* ── Offline-ready variant (green accent) ── */
+.pwa-update--offline {
+  background: #051a0d;
+  border: 1px solid #30d158;
+  color: #ffffff;
+}
+
+.pwa-update--offline .pwa-update__icon {
+  color: #30d158;
+}
+
+.pwa-update__icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.pwa-update__msg {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Buttons ── */
+.pwa-update__btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pwa-update__btn:hover  { opacity: 0.85; }
+.pwa-update__btn:active { opacity: 0.7;  }
+
+.pwa-update__btn--primary {
+  background: #ff3131;
+  color: #ffffff;
+  padding: 6px 14px;
+}
+
+.pwa-update__btn--dismiss {
+  background: transparent;
+  color: #777777;
+  padding: 4px 6px;
+  font-size: 14px;
+}

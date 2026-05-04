@@ -6,6 +6,8 @@ import { initCometChat, loginToCometChat } from './cometchat'
 import AuthLogin from './components/AuthLogin'
 import ProfileSetup from './components/ProfileSetup'
 import CometChatWrapper from './components/CometChatWrapper'
+import InstallPrompt from './pwa/InstallPrompt'
+import UpdatePrompt from './pwa/UpdatePrompt'
 import './App.css'
 
 type AppView = 'login' | 'profileSetup' | 'chat'
@@ -16,33 +18,26 @@ function App() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    // Initialize CometChat
     const initializeApp = async () => {
       try {
         await initCometChat()
         console.log('CometChat initialized')
 
-        // Check Firebase auth state
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
           if (user) {
             console.log('User logged in:', user.uid)
 
-            // Check if profile is complete
             const userDoc = await getDoc(doc(firestore, 'users', user.uid))
 
             if (userDoc.exists() && userDoc.data().displayName) {
-              // Profile complete, login to CometChat
               try {
                 await loginToCometChat(user.uid)
                 setCurrentView('chat')
               } catch (err) {
-                // loginToCometChat already retried 3 times — go to chat anyway.
-                // CometChat will reconnect on its own once the socket is ready.
                 console.error('CometChat login error after retries:', err)
                 setCurrentView('chat')
               }
             } else {
-              // Profile incomplete, show setup
               setCurrentView('profileSetup')
             }
           } else {
@@ -92,6 +87,9 @@ function App() {
 
   return (
     <div className="app">
+      {/* SW update banner — always mounted, renders only when relevant */}
+      <UpdatePrompt />
+
       {currentView === 'login' && (
         <AuthLogin onLoginSuccess={handleLoginSuccess} />
       )}
@@ -101,6 +99,9 @@ function App() {
       {currentView === 'chat' && (
         <CometChatWrapper />
       )}
+
+      {/* Install prompt — shown on all views; hides itself when not eligible */}
+      <InstallPrompt />
     </div>
   )
 }

@@ -1,11 +1,40 @@
 .cometchat-wrapper {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background: var(--cometchat-background-color-01, #fff);
 }
 
+/* ── Offline indicator bar ── */
+.cometchat-offline-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #1a1100;
+  color: #f0a500;
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 1px solid #3a2a00;
+  flex-shrink: 0;
+}
+
+.cometchat-offline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f0a500;
+  flex-shrink: 0;
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ── Header ── */
 .cometchat-wrapper-header {
   display: flex;
   align-items: center;
@@ -13,6 +42,7 @@
   padding: 12px 20px;
   border-bottom: 1px solid var(--cometchat-border-color-default, #e8e8e8);
   background: var(--cometchat-background-color-01, #fff);
+  flex-shrink: 0;
 }
 
 .cometchat-wrapper-logo {
@@ -36,8 +66,49 @@
 
 .cometchat-wrapper-actions {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+/* ── Install button in header ── */
+.cometchat-wrapper-install-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid #ff3131;
+  background: transparent;
+  color: #ff3131;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.cometchat-wrapper-install-btn:hover {
+  background: #ff3131;
+  color: #ffffff;
+}
+
+.cometchat-wrapper-install-btn:active {
+  opacity: 0.85;
+}
+
+/* Hide the "Install" text on very small screens to save space */
+@media (max-width: 360px) {
+  .cometchat-wrapper-install-btn span {
+    display: none;
+  }
+  .cometchat-wrapper-install-btn {
+    padding: 7px 10px;
+  }
+}
+
+/* ── Menu button ── */
 .cometchat-wrapper-menu-button {
   width: 40px;
   height: 40px;
@@ -50,12 +121,14 @@
   align-items: center;
   justify-content: center;
   transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .cometchat-wrapper-menu-button:hover {
   background: var(--cometchat-background-color-02, #fafafa);
 }
 
+/* ── Dropdown menu ── */
 .cometchat-wrapper-dropdown {
   position: absolute;
   right: 0;
@@ -82,6 +155,7 @@
   align-items: center;
   gap: 12px;
   transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .cometchat-wrapper-dropdown button:hover {
@@ -93,7 +167,9 @@
   border-top: 1px solid var(--cometchat-border-color-default, #e8e8e8);
 }
 
+/* ── Chat content area ── */
 .cometchat-wrapper-content {
   flex: 1;
   overflow: hidden;
+  min-height: 0; /* Required for flex children with overflow */
 }
