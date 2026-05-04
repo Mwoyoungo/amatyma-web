@@ -3,16 +3,15 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { auth, firestore } from './firebase'
 import { initCometChat, loginToCometChat } from './cometchat'
-import SplashScreen from './components/SplashScreen'
 import AuthLogin from './components/AuthLogin'
 import ProfileSetup from './components/ProfileSetup'
 import CometChatWrapper from './components/CometChatWrapper'
 import './App.css'
 
-type AppView = 'splash' | 'login' | 'profileSetup' | 'chat'
+type AppView = 'login' | 'profileSetup' | 'chat'
 
 function App() {
-  const [currentView, setCurrentView] = useState<AppView>('splash')
+  const [currentView, setCurrentView] = useState<AppView>('login')
   const [isInitializing, setIsInitializing] = useState(true)
   const [error, setError] = useState('')
 
@@ -63,20 +62,11 @@ function App() {
   }, [])
 
   const handleLoginSuccess = (username: string, email: string) => {
-    // Store username and email in case needed
     console.log('Login successful:', username, email)
   }
 
   const handleProfileSetupComplete = () => {
     setCurrentView('chat')
-  }
-
-  const handleSplashComplete = () => {
-    setCurrentView(isInitializing ? 'login' : currentView === 'splash' ? 'login' : currentView)
-  }
-
-  if (currentView === 'splash') {
-    return <SplashScreen onComplete={handleSplashComplete} />
   }
 
   if (isInitializing) {
