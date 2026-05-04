@@ -82,9 +82,11 @@ export default defineConfig({
         // Don't intercept service-worker or workbox chunks themselves
         navigateFallbackDenylist: [/^\/sw\.js$/, /^\/workbox-.*\.js$/],
 
-        // Don't skip waiting — we prompt users before activating new SW
-        skipWaiting: false,
-        clientsClaim: false,
+        // New SW takes control immediately after install.
+        // The page still runs old code until the user reloads, which
+        // useRegisterSW detects and prompts via the UpdatePrompt banner.
+        skipWaiting: true,
+        clientsClaim: true,
 
         runtimeCaching: [
           // ── CometChat REST API ── NetworkFirst, 5s timeout, 5min TTL ──
