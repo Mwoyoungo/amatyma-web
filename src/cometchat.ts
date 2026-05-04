@@ -26,10 +26,17 @@ export const initCometChat = async (): Promise<void> => {
 };
 
 export const loginToCometChat = async (uid: string): Promise<CometChat.User> => {
-  // If already logged in (e.g. after init settled), skip the login call entirely
-  const existing = await CometChatUIKit.getLoggedInUser().catch(() => null);
+  // Synchronous check first (CometChatUIKitLoginListener caches the session)
+  const { CometChatUIKitLoginListener } = await import("@cometchat/chat-uikit-react");
+  const syncUser = CometChatUIKitLoginListener.getLoggedInUser();
+  if (syncUser) {
+    console.log("CometChat already logged in (sync):", syncUser.getName());
+    return syncUser;
+  }
+  // Async check as secondary fallback
+  const existing = await CometChatUIKit.getLoggedinUser().catch(() => null);
   if (existing) {
-    console.log("CometChat already logged in:", existing.getName());
+    console.log("CometChat already logged in (async):", existing.getName());
     return existing;
   }
 

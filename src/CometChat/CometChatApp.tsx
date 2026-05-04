@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useCometChatContext } from './context/CometChatContext';
 import { CometChat } from '@cometchat/chat-sdk-javascript';
 import useSystemColorScheme from './customHooks';
-import { CometChatUIKit } from '@cometchat/chat-uikit-react';
+import { CometChatUIKit, CometChatUIKitLoginListener } from '@cometchat/chat-uikit-react';
 import '@cometchat/chat-uikit-react/css-variables.css';
 import useThemeStyles from './customHook/useThemeStyles';
 
@@ -26,8 +26,16 @@ interface CometChatAppProps {
  * @returns {JSX.Element} The rendered CometChatApp component.
  */
 function CometChatApp({ user, group, showGroupActionMessages }: CometChatAppProps) {
-  const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(null);
-  const [sessionChecked, setSessionChecked] = useState(false);
+  // Use the synchronous login-listener cache as the initial value.
+  // If loginToCometChat() already ran successfully, this is non-null
+  // immediately and we never flash the loading or login-placeholder state.
+  const [loggedInUser, setLoggedInUser] = useState<CometChat.User | null>(
+    () => CometChatUIKitLoginListener.getLoggedInUser()
+  );
+  // sessionChecked = true as soon as we have a definitive answer
+  const [sessionChecked, setSessionChecked] = useState(
+    () => CometChatUIKitLoginListener.getLoggedInUser() !== null
+  );
   const { styleFeatures, setStyleFeatures } = useCometChatContext();
 
   const systemTheme = useSystemColorScheme();
@@ -42,6 +50,7 @@ function CometChatApp({ user, group, showGroupActionMessages }: CometChatAppProp
       new CometChat.LoginListener({
         loginSuccess: (user: CometChat.User) => {
           setLoggedInUser(user);
+          setSessionChecked(true);
         },
         logoutSuccess: () => {
           setLoggedInUser(null);
@@ -53,28 +62,41 @@ function CometChatApp({ user, group, showGroupActionMessages }: CometChatAppProp
   }, []);
 
   /**
-   * Fetches the currently logged-in CometChat user and updates the state.
-   * Retries up to 5 times with 600ms gaps to handle the post-init timing gap
-   * where login() has resolved but the internal session hasn't settled yet.
+   * Fallback async session check.
+   * Only runs if the synchronous check returned null (user not yet in the
+   * listener cache). Retries up to 5 × 600 ms to handle the post-init
+   * timing gap where login() resolved but the cache hasn't settled.
    */
   useEffect(() => {
+    // If we already have a user from the synchronous check, do nothing
+    if (sessionChecked) return;
+
     let cancelled = false;
     const checkUser = async () => {
       for (let i = 0; i < 5; i++) {
-        const user = await CometChatUIKit.getLoggedinUser().catch(() => null);
+        // Prefer synchronous listener cache on each iteration
+        const syncUser = CometChatUIKitLoginListener.getLoggedInUser();
+        if (syncUser) {
+          if (!cancelled) { setLoggedInUser(syncUser); setSessionChecked(true); }
+          return;
+        }
+        // Async SDK call as secondary source
+        const asyncUser = await CometChatUIKit.getLoggedinUser().catch(() => null);
         if (cancelled) return;
-        if (user) {
-          setLoggedInUser(user);
+        if (asyncUser) {
+          setLoggedInUser(asyncUser);
           setSessionChecked(true);
           return;
         }
         await new Promise((res) => setTimeout(res, 600));
       }
-      setSessionChecked(true);
+      // Exhausted retries — mark done (will show LoginPlaceholder)
+      if (!cancelled) setSessionChecked(true);
     };
+
     checkUser();
     return () => { cancelled = true; };
-  }, []);
+  }, [sessionChecked]);
 
   if (!sessionChecked) {
     return (
