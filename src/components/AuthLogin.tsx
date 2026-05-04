@@ -105,7 +105,7 @@ export default function AuthLogin({ onLoginSuccess }: AuthLoginProps) {
       <div className="cometchat-login__content">
         <div className="cometchat-login__header">
           <div className="cometchat-login__logo">
-            <img src="/logo.jpg" alt="Amatyma" />
+            <img src="/logo.png" alt="Amatyma" />
           </div>
           <div className="cometchat-login__title">
             {mode === 'login' && 'Welcome Back'}

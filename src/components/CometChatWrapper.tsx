@@ -30,7 +30,7 @@ export default function CometChatWrapper() {
     <div className="cometchat-wrapper">
       <div className="cometchat-wrapper-header">
         <div className="cometchat-wrapper-logo">
-          <img src="/logo.jpg" alt="Amatyma" />
+          <img src="/logo.png" alt="Amatyma" />
           <span>Amatyma</span>
         </div>
         <div className="cometchat-wrapper-actions">

@@ -26,15 +26,36 @@ export const initCometChat = async (): Promise<void> => {
 };
 
 export const loginToCometChat = async (uid: string): Promise<CometChat.User> => {
-  return CometChatUIKit.login(uid)
-    .then((user) => {
+  // If already logged in (e.g. after init settled), skip the login call entirely
+  const existing = await CometChatUIKit.getLoggedInUser().catch(() => null);
+  if (existing) {
+    console.log("CometChat already logged in:", existing.getName());
+    return existing;
+  }
+
+  // Retry up to 3 times with increasing delays to handle the post-init race condition
+  const delays = [1000, 2000, 3000];
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt <= delays.length; attempt++) {
+    try {
+      const user = await CometChatUIKit.login(uid);
       console.log("CometChat login successful:", user.getName());
       return user;
-    })
-    .catch((error) => {
-      console.error("CometChat login failed:", error);
-      throw error;
-    });
+    } catch (error) {
+      lastError = error;
+      console.warn(`CometChat login attempt ${attempt + 1} failed:`, error);
+      if (attempt < delays.length) {
+        await new Promise((res) => setTimeout(res, delays[attempt]));
+        // Check again — a previous attempt may have partially succeeded
+        const retryCheck = await CometChatUIKit.getLoggedInUser().catch(() => null);
+        if (retryCheck) return retryCheck;
+      }
+    }
+  }
+
+  console.error("CometChat login failed after retries:", lastError);
+  throw lastError;
 };
 
 export const logoutFromCometChat = async (): Promise<void> => {

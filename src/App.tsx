@@ -36,8 +36,10 @@ function App() {
                 await loginToCometChat(user.uid)
                 setCurrentView('chat')
               } catch (err) {
-                console.error('CometChat login error:', err)
-                setError('Failed to connect to chat service')
+                // loginToCometChat already retried 3 times — go to chat anyway.
+                // CometChat will reconnect on its own once the socket is ready.
+                console.error('CometChat login error after retries:', err)
+                setCurrentView('chat')
               }
             } else {
               // Profile incomplete, show setup
