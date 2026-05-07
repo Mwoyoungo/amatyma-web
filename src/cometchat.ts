@@ -2,9 +2,9 @@ import { CometChat } from "@cometchat/chat-sdk-javascript";
 import { CometChatUIKit, UIKitSettingsBuilder } from "@cometchat/chat-uikit-react";
 
 const COMETCHAT_CONSTANTS = {
-  APP_ID: "281421fd397d9bf6",
+  APP_ID: "1678655d5116b4d9e",
   REGION: "us",
-  AUTH_KEY: "5d7e15509f2034cf002555883a2e732d412d358a",
+  AUTH_KEY: "645135588ebf9d6fa298be23f0fea0d49d97fb57",
 };
 
 export const initCometChat = async (): Promise<void> => {
