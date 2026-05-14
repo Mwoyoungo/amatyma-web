@@ -53,10 +53,21 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  /* Reserve space for the iOS status bar when in standalone mode */
+  /* Reserve space for device safe areas (notch, home indicator, status bar) */
   padding-top: var(--sat);
   padding-left: var(--sal);
   padding-right: var(--sar);
+  padding-bottom: var(--sab);
+}
+
+/* iOS Safari < 15 fallback — dvh not supported */
+@supports (-webkit-touch-callout: none) {
+  body {
+    min-height: -webkit-fill-available;
+  }
+  #root {
+    min-height: -webkit-fill-available;
+  }
 }
 
 /* ── Input zoom prevention on iOS (< 16px triggers auto-zoom) ── */

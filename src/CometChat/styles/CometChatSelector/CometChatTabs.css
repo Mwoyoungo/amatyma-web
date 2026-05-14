@@ -60,3 +60,9 @@
 .cometchat-tab-component__tab-text-active {
     color: var(--cometchat-text-color-highlight);
 }
+
+@media (max-width: 768px) {
+    .cometchat-tab-component {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+}
