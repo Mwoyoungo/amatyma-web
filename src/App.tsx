@@ -3,6 +3,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
 import { auth, firestore } from './firebase'
 import { initCometChat, loginToCometChat } from './cometchat'
+import { setupLocalization } from './CometChat/utils/utils'
 import AuthLogin from './components/AuthLogin'
 import ProfileSetup from './components/ProfileSetup'
 import CometChatWrapper from './components/CometChatWrapper'
@@ -20,6 +21,7 @@ function App() {
   useEffect(() => {
     const initializeApp = async () => {
       try {
+        setupLocalization()
         await initCometChat()
         console.log('CometChat initialized')
 
