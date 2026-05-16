@@ -68,6 +68,10 @@ function App() {
     setCurrentView('chat')
   }
 
+  const handleLogout = () => {
+    setCurrentView('login')
+  }
+
   if (isInitializing) {
     return (
       <div className="loading-container">
@@ -99,7 +103,7 @@ function App() {
         <ProfileSetup onComplete={handleProfileSetupComplete} />
       )}
       {currentView === 'chat' && (
-        <CometChatWrapper />
+        <CometChatWrapper onLogout={handleLogout} />
       )}
 
       {/* Install prompt — shown on all views; hides itself when not eligible */}

@@ -8,7 +8,11 @@ import { usePWAInstall } from '../pwa/usePWAInstall';
 import { useOnlineStatus } from '../pwa/useOnlineStatus';
 import './CometChatWrapper.css';
 
-export default function CometChatWrapper() {
+interface Props {
+  onLogout: () => void;
+}
+
+export default function CometChatWrapper({ onLogout }: Props) {
   const [showProfileEdit, setShowProfileEdit] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
@@ -19,9 +23,10 @@ export default function CometChatWrapper() {
     try {
       await CometChatUIKit.logout();
       await signOut(auth);
-      window.location.reload();
     } catch (error) {
       console.error('Logout error:', error);
+    } finally {
+      onLogout();
     }
   };
 
