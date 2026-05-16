@@ -100,8 +100,9 @@ function CometChatApp({ user, group, showGroupActionMessages }: CometChatAppProp
 
   if (!sessionChecked) {
     return (
-      <div className="CometChatApp" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-        <div className="cometchat-logo" />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '12px', background: '#fff' }}>
+        <img src="/logo.png" alt="Amatyma" style={{ width: 64, height: 64, borderRadius: 16 }} />
+        <span style={{ fontFamily: 'sans-serif', fontSize: 20, fontWeight: 700, color: '#1a1a1a', letterSpacing: '-0.5px' }}>Amatyma</span>
       </div>
     );
   }
@@ -109,7 +110,7 @@ function CometChatApp({ user, group, showGroupActionMessages }: CometChatAppProp
   return (
     <div className="CometChatApp">
       <AppContextProvider>
-        {loggedInUser ? <CometChatHome defaultGroup={group} defaultUser={user} showGroupActionMessages={showGroupActionMessages} /> : <LoginPlaceholder />}
+        {loggedInUser && <CometChatHome defaultGroup={group} defaultUser={user} showGroupActionMessages={showGroupActionMessages} />}
       </AppContextProvider>
     </div>
   );
@@ -117,11 +118,3 @@ function CometChatApp({ user, group, showGroupActionMessages }: CometChatAppProp
 
 export default CometChatApp;
 
-const LoginPlaceholder = () => {
-  return (
-    <div className="login-placeholder">
-      <div className="cometchat-logo" />
-      <h3>This is where your website&apos;s login screen should appear.</h3>
-    </div>
-  );
-};
