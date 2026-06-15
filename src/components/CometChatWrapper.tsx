@@ -3,6 +3,7 @@ import CometChatApp from '../CometChat/CometChatApp';
 import ProfileEdit from './ProfileEdit';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import { removePushToken } from '../pwa/pushNotifications';
 import { CometChatUIKit } from '@cometchat/chat-uikit-react';
 import { usePWAInstall } from '../pwa/usePWAInstall';
 import { useOnlineStatus } from '../pwa/useOnlineStatus';
@@ -20,7 +21,10 @@ export default function CometChatWrapper({ onLogout }: Props) {
   const isOnline = useOnlineStatus();
 
   const handleLogout = async () => {
+    const uid = auth.currentUser?.uid;
     try {
+      // Stop this browser from receiving call/message pushes once signed out
+      if (uid) await removePushToken(uid).catch(() => {});
       await CometChatUIKit.logout();
       await signOut(auth);
     } catch (error) {

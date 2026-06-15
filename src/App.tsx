@@ -4,6 +4,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import { auth, firestore } from './firebase'
 import { initCometChat, loginToCometChat } from './cometchat'
 import { setupLocalization } from './CometChat/utils/utils'
+import { initPushNotifications } from './pwa/pushNotifications'
 import AuthLogin from './components/AuthLogin'
 import ProfileSetup from './components/ProfileSetup'
 import CometChatWrapper from './components/CometChatWrapper'
@@ -39,6 +40,10 @@ function App() {
                 console.error('CometChat login error after retries:', err)
                 setCurrentView('chat')
               }
+              // Register web push so calls/messages ring this browser too
+              initPushNotifications(user.uid).catch((e) =>
+                console.warn('Push init failed:', e)
+              )
             } else {
               setCurrentView('profileSetup')
             }
